@@ -1,0 +1,21 @@
+08-13
+
+find good data
+
+process data
+plausibility analysis
+
+gesundheitssystem
+
+logistic regression
+
+
+08-14
+
+descriptive statistics
+
+analysis
+
+preprocessing / whitening
+
+model (logistic regression)
