@@ -19,3 +19,16 @@ analysis
 preprocessing / whitening
 
 model (logistic regression)
+
+project_outline.txt
+
+
+08-17
+
+mostly categorical features
+
+enhance dataset?
+
+wait for restricted dataset
+
+if not, use geo datset with hosp
