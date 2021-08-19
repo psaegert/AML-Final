@@ -32,3 +32,17 @@ enhance dataset?
 wait for restricted dataset
 
 if not, use geo datset with hosp
+
+
+08-19
+
+use geo dataset
+
+free / total beds
+used icu / total icu beds
+
+cap county fraction at 1?
+
+poverty data: 2017 value and 15 - 17 trend
+
+modell
