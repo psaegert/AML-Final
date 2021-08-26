@@ -46,3 +46,10 @@ cap county fraction at 1?
 poverty data: 2017 value and 15 - 17 trend
 
 modell
+
+
+08-24
+
+combine poverty, education, ...
+
+MLP, naive statistics, SVM
