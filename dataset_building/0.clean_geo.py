@@ -1,15 +1,19 @@
 import numpy as np
 import pandas as pd
 
-data = pd.read_csv('../../data/COVID-19_Case_Surveillance_Public_Use_Data_with_Geography.csv')
+print('Reading Dataset...')
+data = pd.read_csv('../data/COVID-19_Case_Surveillance_Public_Use_Data_with_Geography.csv')
 
 
 print(data.info())
 
 
+print('Dropping Columns...')
 data = data.drop(columns=['process', 'exposure_yn', 'icu_yn', 'case_positive_specimen_interval', 'underlying_conditions_yn', 'res_state', 'res_county'])
 data = data.dropna()
 
+
+print('Mapping Values to Int...')
 data.current_status = data.current_status.map({'Laboratory-confirmed case': 1, 'Probable Case': 0}).astype(int)
 
 data['sex_female'] = data.sex.map({'Female': 1, 'Male': 0, 'Missing': -1, 'Other': -1, 'Unknown': -1}).astype(int)
@@ -21,6 +25,8 @@ data.death_yn = data.death_yn.map({'No': 0, 'Yes': 1, 'Missing': -1, 'Unknown': 
 
 data.symptom_status = data.symptom_status.map({'Symptomatic': 1, 'Missing': 0}).astype(int)
 
+
+print('Mapping Age and Race...')
 data.age_group = data.age_group.map({'0 - 17 years': 0, '18 to 49 years': 18, '50 to 64 years': 50, '65+ years': 65, 'Missing': 'missing'})
 
 data = pd.concat([data, pd.get_dummies(data['age_group'], prefix='age')], axis=1)
@@ -38,6 +44,8 @@ data['race_white'] = data.race.str.contains('White')
 
 data['ethnicity_hispanic'] = data.ethnicity.str.contains('Hispanic/Latino')
 
+
+print('Dropping Unusable Rows...')
 data = data.drop(columns=['race', 'ethnicity'])
 drop_mask = (
     (data.current_status == 0)
@@ -59,4 +67,6 @@ data.case_onset_interval = data.case_onset_interval.astype(int)
 
 data = data[list(data.columns.values)[5:] + list(data.columns.values[:5])]
 
-data.to_csv('../../data/data_geo.csv', index=False)
+
+print('Writing Geo Dataset...')
+data.to_csv('../data/data_geo.csv', index=False)
