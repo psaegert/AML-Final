@@ -53,3 +53,25 @@ modell
 combine poverty, education, ...
 
 MLP, naive statistics, SVM
+
+
+
+08-30
+
+pop_estimate_2019 without comma
+
+dataset building slow but ok
+
+train test split und cross validation
+
+svc no probability
+
+legende, src
+
+which features
+
+hyperparameter configurationen beschreiben
+
+binary crossentropy as primary metric
+
+gausssian processes
