@@ -2,6 +2,7 @@
 *.csv
 !legend.csv
 !sources.csv
+**/data/*.pt
 
 
 # Byte-compiled / optimized / DLL files
