@@ -1,5 +1,7 @@
 # Custom
 *.csv
+!legend.csv
+!sources.csv
 
 
 # Byte-compiled / optimized / DLL files
