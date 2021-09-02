@@ -62,16 +62,17 @@ pop_estimate_2019 without comma
 
 dataset building slow but ok
 
-train test split und cross validation
+train test split and cross validation
 
-svc no probability
+svc no probability, use secondary metrics (accuracy, ...)
 
-legende, src
+legend, src
 
 which features
 
-hyperparameter configurationen beschreiben
+explain hyperparameter configurationen in report
+state how many configurations were tested
 
 binary crossentropy as primary metric
 
-gausssian processes
+use gausssian processes and crossvalidation to optimize hyperparameters

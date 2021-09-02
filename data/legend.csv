@@ -1,31 +1,31 @@
-Name,dtype,Description
-hosp_yn ,bool,
-death_yn ,bool,
-sex_female ,bool,
-age_0 ,bool,
-age_18 ,bool,
-age_50 ,bool,
-age_65 ,bool,
-race_native ,bool,
-race_asian ,bool,
-race_black ,bool,
-race_other ,bool,
-race_native_pacific ,bool,
-race_white ,bool,
-ethnicity_hispanic ,bool,
-case_onset_interval ,int,
-symptom_status ,bool,
-used_bed_ratio ,float,
-used_icu_ratio ,float,
-rural-urban_Continuum Code_2013 ,float,
-urban_influence_code_2013 ,float,
-economic_typology_2015 ,float,
-pop_estimate_2019 ,float,
-less_hs_pct ,float,
-hs_only_pct ,float,
-some_college_pct ,float,
-bachelor_higher_pct ,float,
-unempl_rate ,float,
-med_hh_income_19 ,float,
-med_hh_income_pct_state_total_19 ,float,
-poverty_pct_19 ,float,
+Name,dtype,Type,Description
+hosp_yn ,bool,Dependent Variable,Was the patient hospitalized?
+death_yn ,bool,Dependent Variable,Did the patient die as a result of this illness?
+sex_female ,bool,Feature,Is the patient female?
+age_0 ,bool,Feature,Is the patient between 0 and 17 years old?
+age_18 ,bool,Feature,Is the patient between 18 and 49 years old?
+age_50 ,bool,Feature,Is the patient between 50 and 64 years old?
+age_65 ,bool,Feature,Is the patient older than 65 years?
+race_native ,bool,Feature,Is the patient Native American?
+race_asian ,bool,Feature,Is the patient Asian?
+race_black ,bool,Feature,Is the patient Black?
+race_other ,bool,Feature,"Indicates whether the patient’s race is unknown, missing or suppressed for privacy protection"
+race_native_pacific ,bool,Feature,Is the patient Native Hawaiian or Pacific Islander?
+race_white ,bool,Feature,Is the patient White?
+ethnicity_hispanic ,bool,Feature,Is the patient Hispanic?
+case_onset_interval ,int,Feature,Weeks between earliest date and date of symptom onset.
+symptom_status ,bool,Feature,Is the patient symptomatic?
+used_bed_ratio ,float,Feature,
+used_icu_ratio ,float,Feature,
+rural-urban_Continuum Code_2013 ,float,Feature,
+urban_influence_code_2013 ,float,Feature,
+economic_typology_2015 ,float,Feature,
+pop_estimate_2019 ,float,Feature,
+less_hs_pct ,float,Feature,
+hs_only_pct ,float,Feature,
+some_college_pct ,float,Feature,
+bachelor_higher_pct ,float,Feature,
+unempl_rate ,float,Feature,
+med_hh_income_19 ,float,Feature,
+med_hh_income_pct_state_total_19 ,float,Feature,
+poverty_pct_19 ,float,Feature,

@@ -1,1 +1,1 @@
-# AML-Final
+# Predicting the probability of hospitalization and mortality in COVID-19 infection.
