@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 print('Reading Dataset...')
-data = pd.read_csv('../data/COVID-19_Case_Surveillance_Public_Use_Data_with_Geography.csv')
+data = pd.read_csv('../data/geo_data/COVID-19_Case_Surveillance_Public_Use_Data_with_Geography.csv')
 
 
 print(data.info())
@@ -69,4 +69,4 @@ data = data[list(data.columns.values)[5:] + list(data.columns.values[:5])]
 
 
 print('Writing Geo Dataset...')
-data.to_csv('../data/data_geo.csv', index=False)
+data.to_csv('../data/partially_combined/data_geo.csv', index=False)

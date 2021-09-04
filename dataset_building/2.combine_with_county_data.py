@@ -4,14 +4,14 @@ from tqdm.auto import tqdm
 
 print('Reading Data...')
 # all necessary data has to be in a dedicated 'data' folder
-data = pd.read_csv('data/data_geo_hosp.csv')
+data = pd.read_csv('../data/partially_combined/data_geo_hosp.csv')
 
 # save data for later sanity check
 data_length = len(data)
-education = pd.read_csv('data/county_data/Education.csv', encoding = "latin")
-population = pd.read_csv('data/county_data/PopulationEstimates.csv', encoding = "latin")
-unemployment = pd.read_csv('data/county_data/Unemployment.csv', encoding = "latin")
-poverty = pd.read_csv('data/county_data/PovertyEstimates.csv', encoding = "latin")
+education = pd.read_csv('../data/county_data/Education.csv', encoding = "latin")
+population = pd.read_csv('../data/county_data/PopulationEstimates.csv', encoding = "latin")
+unemployment = pd.read_csv('../data/county_data/Unemployment.csv', encoding = "latin")
+poverty = pd.read_csv('../data/county_data/PovertyEstimates.csv', encoding = "latin")
 
 print('Sorting Data by FIPS Code...')
 # sort data
@@ -111,8 +111,9 @@ data["med_hh_income_pct_state_total_19"] = empl3_list
 data["poverty_pct_19"] = pov1_list
 
 print('Performing Sanity Check...')
-#lastly, perform sanity check
+# lastly, perform sanity check
 if (data_length == len(data)):
-    data.to_csv('data.csv', index=False)
+    print('Writing Dataset...')
+    data.to_csv('../data/data.csv', index=False)
 else:
     print("size of data sets is different")

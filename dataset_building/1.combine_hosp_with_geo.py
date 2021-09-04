@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-df = pd.read_csv('../data/COVID-19_Reported_Patient_Impact_and_Hospital_Capacity_by_Facility.csv')
+df = pd.read_csv('../data/hosp_data/COVID-19_Reported_Patient_Impact_and_Hospital_Capacity_by_Facility.csv')
 
 print(df.info())
 
@@ -71,7 +71,7 @@ df['fips_code'] = df['fips_code'].astype(int)
 
 # loading data
 df_hos = df
-df_geo = pd.read_csv('../data/data_geo.csv')
+df_geo = pd.read_csv('../data/partially_combined/data_geo.csv')
 
 # mapping month and fips code in the geo dataset to used_bed_ratio and used_icu_ratio in the hospital dataset
 # first we create a dictionary to encode the mapping
@@ -108,4 +108,4 @@ df_geo = df_geo.dropna()
 
 # save data
 print('Writing Geo_Hosp Dataset...')
-df_geo.to_csv('../data/data_geo_hosp.csv', index=False)
+df_geo.to_csv('../data/partially_combined/data_geo_hosp.csv', index=False)
