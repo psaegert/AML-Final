@@ -1,4 +1,6 @@
 Geography,https://data.cdc.gov/Case-Surveillance/COVID-19-Case-Surveillance-Public-Use-Data-with-Ge/n8mc-b4w4
 Hospitalization,https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/anag-cw7u
-Poverty,
-Education,
+Education,https://www.ers.usda.gov/data-products/county-level-data-sets/download-data/
+Population Estimates,https://www.ers.usda.gov/data-products/county-level-data-sets/download-data/
+Poverty Estimates,https://www.ers.usda.gov/data-products/county-level-data-sets/download-data/
+Unemployment,https://www.ers.usda.gov/data-products/county-level-data-sets/download-data/
