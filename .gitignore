@@ -1,5 +1,5 @@
 # Custom
-*.csv
+**/*.csv
 !legend.csv
 !sources.csv
 **/data/*.pt
