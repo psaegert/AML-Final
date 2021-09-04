@@ -2,10 +2,10 @@
 **/*.csv
 !legend.csv
 !sources.csv
+
 **/data/*.pt
 
 **/.~lock.*.csv#
-
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
