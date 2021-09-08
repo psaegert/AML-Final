@@ -3,15 +3,17 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class SkipConnectionNet(nn.Module):
-    def __init__(self, n_features, layer_sizes):
+    def __init__(self, in_features, hidden_layer_sizes, out_features):
         super(SkipConnectionNet, self).__init__()
         layers = []
 
-        n_in = n_features
-        for n_out in layer_sizes:
+        n_in = in_features
+        for n_out in hidden_layer_sizes:
             layers.append(nn.Linear(n_in, n_out))
             layers.append(nn.ReLU())
             n_in = n_out
+
+        layers.append(nn.Linear(n_in, out_features))
 
         self.model = nn.Sequential(*layers)
 
@@ -19,50 +21,69 @@ class SkipConnectionNet(nn.Module):
         return self.model(X)
 
 
-class AffineCoupling(nn.Module):
+class TwoWayAffineCoupling(nn.Module):
     def __init__(self, features, device=None, dtype=None):
-        super(AffineCoupling, self).__init__()
+        super(TwoWayAffineCoupling, self).__init__()
 
         self.features = features
 
         self.split_size_A = features // 2
         self.split_size_B = self.features - self.split_size_A
 
-        self.S = SkipConnectionNet(self.split_size_A, [32, 32, 32])
-        self.T = SkipConnectionNet(self.split_size_A, [32, 32, 32])
+        self.logSa = SkipConnectionNet(self.split_size_A, [32, 32], self.split_size_B)
+        self.Ta = SkipConnectionNet(self.split_size_A, [32, 32], self.split_size_B)
+
+        self.logSb = SkipConnectionNet(self.split_size_B, [32, 32], self.split_size_A)
+        self.Tb = SkipConnectionNet(self.split_size_B, [32, 32], self.split_size_A)
 
 
     def forward(self, input):
+        '''
+        Za = Xa * Sb(Xb) + Tb(Xb)
+        Zb = Xb * Sa(Xa) + Ta(Xa)
+        '''
         Xa, Xb = torch.chunk(input, 2, dim=1)
-        Zb = self.S(Xa) * Xb + self.T(Xa)
+        
+        log_Sa = self.logSa(Xa)
+        log_Sb = self.logSb(Xb)
+        Za = Xa * torch.exp(log_Sb) + self.Tb(Xb)
+        Zb = Xb * torch.exp(log_Sa) + self.Ta(Xa)
 
-        return torch.cat([Xa, Zb], dim=1)
+        self.logdet = log_Sa.sum(-1) + log_Sb.sum(-1)
 
-    def reverse(self, input):
+        return torch.cat([Za, Zb], dim=1)
+
+    def inverse(self, input):
+        '''
+        Xb = (Zb - Ta(Za)) / Sa(Za)
+        Xa = (Za - Tb(Zb)) / Sb(Zb)
+        '''
         Za, Zb = torch.chunk(input, 2, dim=1)
-        Xb = (Zb - self.T(Za)) / self.S(Za)
 
-        return torch.cat([Za, Xb], dim=1)
+        Xb = (Zb - self.Ta(Za)) * torch.exp(- self.logSa(Za))
+        Xa = (Za - self.Tb(Zb)) * torch.exp(- self.logSb(Zb))
+
+        return torch.cat([Xa, Xb], dim=1)
 
 
-class Permute(nn.Module):
-    def __init__(self, features, device=None, dtype=None):
-        super(Permute, self).__init__()
+class RandomPermute(nn.Module):
+    def __init__(self, D, device=None, dtype=None):
+        super(RandomPermute, self).__init__()
 
-        self.features = features
+        # number of features
+        self.D = D
 
-        self.Q = torch.zeros((self.features, self.features))
-        self.Q[torch.randperm(self.features)] = torch.ones(self.features)
+        self.Q = torch.zeros((self.D, self.D))
+        self.Q[torch.randperm(self.D), torch.randperm(self.D)] = torch.ones(self.D)
 
     def forward(self, X):
         return X.matmul(self.Q)
 
-    def reverse(self, Z):
+    def inverse(self, Z):
         return Z.matmul(self.Q.t())
 
 
 class INN(nn.Module):
-
     def __init__(self, in_features, out_features, n_blocks=1, device='cpu'):   
         assert in_features >= out_features     
         super(INN, self).__init__()
@@ -73,24 +94,29 @@ class INN(nn.Module):
 
         self.device = device
         
-        self.blocks = nn.ModuleList()
+        self.layers = nn.ModuleList()
 
         for _ in range(n_blocks):
-            self.blocks.append(Permute(self.in_features, device=self.device))
-            self.blocks.append(AffineCoupling(self.in_features, device=self.device))
+            self.layers.append(RandomPermute(self.in_features, device=self.device))
+            self.layers.append(TwoWayAffineCoupling(self.in_features, device=self.device))
         
-        self.blocks.append(Permute(self.in_features, device=self.device))
+        self.layers.append(RandomPermute(self.in_features, device=self.device))
 
 
     def forward(self, X):
-        for block in self.blocks:
-            X = block.forward(X)
+        self.logdet_sum = 0
 
-        return X[:, :self.in_features], X[:, self.in_features:]
+        for layer in self.layers:
+            X = layer.forward(X)
+            if hasattr(layer, 'logdet'):
+                self.logdet_sum += layer.logdet
+
+        return X[:, :self.out_features], X[:, self.out_features:]
 
 
-    def reverse(self, YZ):
-        for block in self.blocks[::-1]:
-            YZ = block.reverse(YZ)
+    def inverse(self, Y, Z):
+        YZ = torch.cat([Y, Z], dim=1)
+        for layer in self.layers[::-1]:
+            YZ = layer.inverse(YZ)
 
         return YZ
