@@ -43,8 +43,8 @@ class TwoWayAffineCoupling(nn.Module):
         self.split_size_A = features // 2
         self.split_size_B = self.features - self.split_size_A
 
-        self.NNa = NN(self.split_size_A, [32, 32], self.split_size_B)
-        self.NNb = NN(self.split_size_B, [32, 32], self.split_size_A)
+        self.NNa = NN(self.split_size_A, [64, 64, 64], self.split_size_B)
+        self.NNb = NN(self.split_size_B, [64, 64, 64], self.split_size_A)
 
 
     def forward(self, input):
@@ -130,10 +130,10 @@ class INN(nn.Module):
         self.layers = nn.ModuleList()
 
         for _ in range(n_blocks):
-            # self.layers.append(RandomPermute(self.in_features, device=self.device))
+            self.layers.append(RandomPermute(self.in_features, device=self.device))
             self.layers.append(TwoWayAffineCoupling(self.in_features, device=self.device))
         
-        # self.layers.append(RandomPermute(self.in_features, device=self.device))
+        self.layers.append(RandomPermute(self.in_features, device=self.device))
 
 
     def forward(self, X):
@@ -148,7 +148,7 @@ class INN(nn.Module):
             if hasattr(layer, 'logdet'):
                 self.logdet_sum += layer.logdet
 
-        return X[:, :self.out_features], X[:, self.out_features:]
+        return torch.sigmoid(X[:, :self.out_features]), X[:, self.out_features:]
 
 
     def inverse(self, Y, Z):
