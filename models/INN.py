@@ -1,6 +1,9 @@
 import torch
+from torch.optim import Adam
 import torch.nn as nn
+import torch.nn.functional as F
 from torch.nn.modules.container import ModuleList
+from tqdm.auto import tqdm
 
 
 class CouplingNetwork(nn.Module):
@@ -133,3 +136,77 @@ class INN(nn.Module):
             YZ = layer.inverse(YZ)
 
         return YZ
+    
+    def fit(self, X, y, n_epochs=1, batch_size=64, optimizer=None, loss_weights=None):
+        self.train()
+
+        if not optimizer:
+            optimizer = Adam(self.parameters(), lr=1e-4)
+
+        if not loss_weights:
+            loss_weights = {
+                'bce_factor': 1,
+                'dvg_factor': 1,
+                'logdet_factor': 1,
+                'rcst_factor': 1
+            }
+
+        loss_history = {
+            'weighted_loss': [],
+            'bce': [],
+            'dvg': [],
+            'rcst': [],
+            'logdet': []
+        }
+
+        # ignores last batch
+        n_batches = len(X) // batch_size
+
+        for i_epoch in range(n_epochs):
+
+            progress_bar = tqdm(range(n_batches), desc=f'Epoch {i_epoch}')
+
+            for i_batch in progress_bar:
+
+                optimizer.zero_grad()
+                loss = 0
+                
+                # --- FORWARD ---
+                y_pred, z_pred = self.forward(X[i_batch * batch_size : (i_batch+1) * batch_size])
+
+                bce_loss = F.binary_cross_entropy(y_pred, y[i_batch * batch_size : (i_batch+1) * batch_size]) * loss_weights['bce_factor']
+                loss += bce_loss
+                loss_history['bce'].append(bce_loss.detach().cpu().numpy())
+                
+                dvg_loss = torch.mean(torch.sum(z_pred**2, dim=-1)) / 2 * loss_weights['dvg_factor']
+                loss += dvg_loss
+                loss_history['dvg'].append(dvg_loss.detach().cpu().numpy())
+                
+                logdet_loss = - torch.mean(self.logdet_sum) * loss_weights['logdet_factor']
+                loss += logdet_loss
+                loss_history['logdet'].append(logdet_loss.detach().cpu().numpy())
+                
+
+                # --- INVERSE ---
+                X_pred = self.inverse(y_pred, z_pred)
+                
+                rcst_loss = F.huber_loss(X_pred, X[i_batch * batch_size : (i_batch+1) * batch_size], delta=2., reduction='mean') * loss_weights['rcst_factor']
+                loss += rcst_loss
+                loss_history['rcst'].append(rcst_loss.detach().cpu().numpy())
+
+
+                loss.backward()
+                optimizer.step()
+
+                weighted_loss = loss.detach().cpu().numpy()
+                loss_history['weighted_loss'].append(weighted_loss)
+
+                progress_bar.set_postfix({
+                    'weighted_loss': "{}{:.3f}".format("+" if weighted_loss > 0 else "", weighted_loss),
+                    'bce': "{}{:.3f}".format("+" if bce_loss > 0 else "", bce_loss / loss_weights['bce_factor']),
+                    'dvg': "{}{:.3f}".format("+" if dvg_loss > 0 else "", dvg_loss / loss_weights['dvg_factor']),
+                    'rcst': "{}{:.3f}".format("+" if rcst_loss > 0 else "", rcst_loss / loss_weights['rcst_factor']),
+                    'logdet': "{}{:.3f}".format("+" if logdet_loss > 0 else "", logdet_loss / loss_weights['logdet_factor']),
+                })
+
+        return loss_history
