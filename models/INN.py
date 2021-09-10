@@ -59,7 +59,7 @@ class TwoWayAffineCoupling(nn.Module):
         Za = Xa * Sb(Xb) + Tb(Xb)
         Zb = Xb * Sa(Xa) + Ta(Xa)
         '''
-        Xa, Xb = torch.chunk(input, 2, dim=1)
+        Xa, Xb = input[:, :self.split_size_A], input[:, self.split_size_A:]
         
         log_Sa, Ta = self.CNa(Xa)
         log_Sb, Tb = self.CNb(Xb)
@@ -75,7 +75,7 @@ class TwoWayAffineCoupling(nn.Module):
         Xb = (Zb - Ta(Za)) / Sa(Za)
         Xa = (Za - Tb(Zb)) / Sb(Zb)
         '''
-        Za, Zb = torch.chunk(input, 2, dim=1)
+        Za, Zb = input[:, :self.split_size_A], input[:, self.split_size_A:]
 
         log_Sa, Ta = self.CNa(Za)
         log_Sb, Tb = self.CNb(Zb)
