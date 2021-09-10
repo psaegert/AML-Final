@@ -76,3 +76,16 @@ state how many configurations were tested
 binary crossentropy as primary metric
 
 use gausssian processes and crossvalidation to optimize hyperparameters
+
+
+10-09
+
+one evaluation notebook, create test prediction
+
+ratios: shift months back
+
+biased training set: 
+
+need more features: ask other student
+
+stratified kfold?
