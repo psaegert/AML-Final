@@ -214,6 +214,7 @@ class INN(nn.Module):
 
                 if verbose == 1:
                     progress_bar_epochs.set_postfix({
+                        'batch': f'{i_batch}/{n_batches}',
                         'weighted_loss': "{}{:.3f}".format("+" if weighted_loss > 0 else "", weighted_loss),
                         'bce': "{}{:.3f}".format("+" if bce_loss > 0 else "", bce_loss / loss_weights['bce_factor']),
                         'dvg': "{}{:.3f}".format("+" if dvg_loss > 0 else "", dvg_loss / loss_weights['dvg_factor']),
