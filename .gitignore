@@ -4,8 +4,9 @@
 !sources.csv
 
 **/data/*.pt
+!**/evaluation_results.*.pt
 
-**/.~lock.*.csv#
+**/.~lock.*.csv
 
 # Byte-compiled / optimized / DLL files
 
