@@ -111,7 +111,7 @@ class INN(nn.Module):
 
         self.in_features = in_features
         self.out_features = out_features
-        self.latent_features = self.in_features - self.out_features
+        # self.latent_features = self.in_features - self.out_features
         self.layers = nn.ModuleList()
 
         for _ in range(n_blocks):
