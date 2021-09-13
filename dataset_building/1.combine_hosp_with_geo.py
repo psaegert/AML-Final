@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from pandas.tseries.offsets import DateOffset
 from tqdm import tqdm
 
 df = pd.read_csv('../data/hosp_data/COVID-19_Reported_Patient_Impact_and_Hospital_Capacity_by_Facility.csv')
@@ -50,6 +51,7 @@ df = df[(df.used_bed_ratio <= 1) & (df.used_icu_ratio <= 1)]
 
 # turn weekly format to monthly format
 df['week'] = pd.to_datetime(df['week'], format = "%Y/%m/%d")
+df['week'] = df['week'] + DateOffset(months=1)
 df['week'] = df['week'].dt.strftime('%Y-%m')
 df = df.rename(columns = {'week' : 'month'})
 
