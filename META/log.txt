@@ -55,7 +55,6 @@ combine poverty, education, ...
 MLP, naive statistics, SVM
 
 
-
 08-30
 
 pop_estimate_2019 without comma
@@ -78,14 +77,27 @@ binary crossentropy as primary metric
 use gausssian processes and crossvalidation to optimize hyperparameters
 
 
-10-09
+09-10
 
 one evaluation notebook, create test prediction
 
 ratios: shift months back
 
-biased training set: 
+biased training set: ask other student
 
-need more features: ask other student
+need more features: election results
 
 stratified kfold?
+
+
+09-14
+
+SMOTE slow. further testing
+
+pca: without county data
+
+rf choose n_estimators manually
+
+update naive bayes
+
+goal: 22nd
