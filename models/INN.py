@@ -171,7 +171,7 @@ class INN(nn.Module):
         self.layers.append(RandomPermute(self.in_features, device=self.device))
 
     def forward(self, X):
-        self.logdet_sum = torch.zeros((X.size(0)))
+        self.logdet_sum = torch.zeros((X.size(0))).to(self.device)
 
         for layer in self.layers:
             X = layer.forward(X)
