@@ -5,6 +5,7 @@
 
 **/data/*.pt
 !**/evaluation_results.*.pt
+**/mnist_data
 
 **/.~lock.*.csv
 
