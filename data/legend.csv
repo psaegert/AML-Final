@@ -29,3 +29,8 @@ unempl_rate ,float,Feature,
 med_hh_income_19 ,float,Feature,
 med_hh_income_pct_state_total_19 ,float,Feature,
 poverty_pct_19 ,float,Feature,
+democrat_20_ratio,float,Feature
+republican_20_ratio,float,Feature
+green_20_ratio,float,Feature
+libertarian_20_ratio,float,Feature
+other_20_ratio,float,Feature
