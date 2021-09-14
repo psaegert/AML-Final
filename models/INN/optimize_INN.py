@@ -46,7 +46,7 @@ loss_weights = {
 }
 
 lr = 5e-4
-n_epochs = 10
+n_epochs = 8
 batch_size = 1024
 
 hyperparameter_search_space_boundaries = {
@@ -105,7 +105,9 @@ def get_mean_CV_Score(score_function, hyperparameters, progress_bar_kwargs=None)
             y_proba_pred_new = inn.forward(X_val_scaled[i_batch * batch_size: (i_batch+1) * batch_size])[0].detach().cpu().numpy()
             y_proba_pred = np.concatenate([y_proba_pred, y_proba_pred_new], axis=0)
 
-        log_loss_list[split_index] = score_function(y_val, y_proba_pred)
+        # log_loss_list[split_index] = score_function(y_val, y_proba_pred)
+        # hosp and death
+        log_loss_list[split_index] = score_function(y_val[:, 0], y_proba_pred[:, 0]) + score_function(y_val[:, 1], y_proba_pred[:, 1])
 
         del inn, X_val_scaled
 
@@ -165,6 +167,7 @@ def initialize_GP(n_samples, progress=0):
 
 initial_n_samples = 8
 additional_n_samples = 24
+
 
 # load checkpoint if possible
 if os.path.isfile('../../hyperparameter_results/INN.pt') and os.path.isfile('../../hyperparameter_results/INN_progress.pt'):
