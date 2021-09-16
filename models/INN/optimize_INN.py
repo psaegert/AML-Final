@@ -1,3 +1,5 @@
+# 23h on i7-6700k@4.5GHz, GTX 980Ti@1353/7010MHz
+
 import os
 
 import numpy as np
