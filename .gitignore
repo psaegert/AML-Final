@@ -4,7 +4,8 @@
 !sources.csv
 
 **/data/*.pt
-!**/evaluation_results.*.pt
+!**/evaluation_results/models/.*.pt
+!**/evaluation_results/loss_histgory/.*.pt
 **/mnist_data
 
 **/.~lock.*.csv
