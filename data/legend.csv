@@ -17,20 +17,20 @@ case_onset_interval ,int,Feature,Weeks between earliest date and date of symptom
 symptom_status ,bool,Feature,Is the patient symptomatic?
 used_bed_ratio ,float,Feature,
 used_icu_ratio ,float,Feature,
-rural-urban_Continuum Code_2013 ,float,Feature,
-urban_influence_code_2013 ,float,Feature,
-economic_typology_2015 ,float,Feature,
-pop_estimate_2019 ,float,Feature,
-less_hs_pct ,float,Feature,
-hs_only_pct ,float,Feature,
-some_college_pct ,float,Feature,
-bachelor_higher_pct ,float,Feature,
-unempl_rate ,float,Feature,
-med_hh_income_19 ,float,Feature,
-med_hh_income_pct_state_total_19 ,float,Feature,
-poverty_pct_19 ,float,Feature,
-democrat_20_ratio,float,Feature
-republican_20_ratio,float,Feature
-green_20_ratio,float,Feature
-libertarian_20_ratio,float,Feature
-other_20_ratio,float,Feature
+rural-urban_Continuum Code_2013 ,float,Feature, rural-urban classification in patient's county
+urban_influence_code_2013 ,float,Feature, rural-urban influence classification in patient's county
+economic_typology_2015 ,float,Feature, economic dependencies in patient's county
+pop_estimate_2019 ,float,Feature, population estimate 2019 in patient's county
+less_hs_pct ,float,Feature, ratio of people with education less than high school in patient's county
+hs_only_pct ,float,Feature, ratio of people with high school educatione in patient's county
+some_college_pct ,float,Feature, ratio of people with some college education in patient's county
+bachelor_higher_pct ,float,Feature, ratio of people with a bachelor's or higher degree in patient's county
+unempl_rate ,float,Feature, unemployment rate 2020 in patient's county
+med_hh_income_19 ,float,Feature,median household income 2019 in patient's county
+med_hh_income_pct_state_total_19 ,float,Feature, median household income as a percentage of the state total 2019 in patient's county
+poverty_pct_19 ,float,Feature, ratio of people who live in poverty in patient's county
+democrat_20_ratio,float,Feature, ratio of people who voted for the democratic party in the 2020's election in patient's county
+republican_20_ratio,float,Feature, ratio of people who voted for the republican party in the 2020's election in patient's county
+green_20_ratio,float,Feature, ratio of people who voted for the green party in the 2020's election in patient's county
+libertarian_20_ratio,float,Feature, ratio of people who voted for the libertarian party in the 2020's election in patient's county
+other_20_ratio,float,Feature, ratio of people who voted for other parties in the 2020's election in patient's county
