@@ -101,3 +101,16 @@ rf choose n_estimators manually
 update naive bayes
 
 goal: 22nd
+
+
+09-22
+
+table style
+
+detailed description of the dataset
+
+find used hardware
+
+where to put hyperparameter results?
+
+INN bug
