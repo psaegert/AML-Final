@@ -114,3 +114,20 @@ find used hardware
 where to put hyperparameter results?
 
 INN bug
+
+
+09-24
+
+MLP nan BCE
+
+table style
+
+rf
+
+deadline time
+
+no hyperparameter plots, too much
+
+hyperparameter results in experiments sections
+
+test cases
