@@ -5,6 +5,8 @@ import torch.nn.functional as F
 from torch.nn.modules.container import ModuleList
 from tqdm.auto import tqdm
 
+EPSILON = 1e-10
+
 
 class CouplingNetwork(nn.Module):
     def __init__(self, in_features, hidden_layer_sizes, out_features, device=None):
@@ -181,7 +183,10 @@ class INN(nn.Module):
         return torch.sigmoid(X[:, :self.out_features]), X[:, self.out_features:]
 
     def inverse(self, Y, Z):
-        YZ = torch.cat([Y, Z], dim=1)
+        # inverse sigmoid: x = ln(y/(1-y))
+        YZ = torch.cat([
+            torch.log(torch.clamp(Y, EPSILON, None)/torch.clamp(1-Y, EPSILON, None)),
+            Z], dim=1)
         for layer in self.layers[::-1]:
             YZ = layer.inverse(YZ)
 
