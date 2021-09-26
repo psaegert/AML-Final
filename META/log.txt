@@ -131,3 +131,13 @@ no hyperparameter plots, too much
 hyperparameter results in experiments sections
 
 test cases
+
+
+09-26
+
+
+conclude results
+
+outlook -> discussion
+
+1400
